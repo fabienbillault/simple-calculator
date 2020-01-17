@@ -1,0 +1,100 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 40px;
+    font-family: 'Open Sans', 'sans-serif';
+    font-size: 35px;
+    background-color: #9dc8d9;
+    color: #000;
+}
+
+h1,
+p {
+    margin: 0 0 1em 0;
+}
+
+#simple-calculator {
+    max-width: 600px;
+    margin: 0;
+    display: grid;
+    grid-gap: 0;
+    border-radius: 20px;
+    box-shadow: -1px 2px 30px 5px rgba(50, 50, 50, 0.2); 
+}
+
+
+/* no grid support? */
+
+#simple-calculator {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#simple-calculator {
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    grid-auto-rows: minmax(85px, auto);
+}
+
+#simple-calculator > * {
+    /* needed for the flex layout*/
+    margin-left: 5px;
+    margin-right: 5px;
+    flex: 1 1 148px;
+    padding-top: 18px;
+}
+
+#calculatorScreen {
+    height: 128px;
+    line-height: 128px;
+    flex: 0 1 100%;
+    grid-column: 1 / -1;
+    font-size: 50px;
+    color: #fff;
+    text-align: right;
+    background-color: #252525;
+    border-radius: 20px 20px 0 0;
+    padding: 0 30px;
+}
+
+.key {
+    text-align: center;
+    background-color: #fff;
+    user-select: none;
+    cursor: pointer;
+    border: 1px solid rgba(180, 180, 180, 0.6);
+}
+
+.key:active {
+    box-shadow: -1px -1px 10px 1px rgba(50, 50, 50, 0.2) inset;
+}
+
+.operator {
+    background-color: #e9e9e9;
+}
+
+#zeroKey {
+    border-bottom-left-radius: 20px;
+}
+
+#equalKey {
+    grid-column: 4;
+    grid-row: 3 / 7;
+    border-bottom-right-radius: 20px;
+    background-color: #f77d4f;
+    line-height: 300px;
+}
+
+
+/* We need to set the margin used on flex items to 0 as we have gaps in grid.  */
+
+@supports (display: grid) {
+  #simple-calculator > * {
+    margin: 0;
+  }
+}
