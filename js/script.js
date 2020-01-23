@@ -17,7 +17,11 @@
     {
         if (input[value].indexOf('.') === -1)
         {
-            if (!input[value] || input[value] === '-') { input[value] += '0'; }
+            if (!input[value] || input[value] === '-')
+            {
+                input[value] += '0';
+                operationResult = '';
+            }
 
             input[value] += '.';
         }
@@ -35,9 +39,9 @@
     {
         if (!input[value])
         {
-            if (operator === '-' && input.operator != '-' && !operationResult)
+            if (operator === '-' && input.operator !== '-' && !operationResult)
             {
-                input[value] += '-';
+                input.operator === '+' ? input.operator = '-' : input[value] += '-';
             }
             else
             {
@@ -79,6 +83,17 @@
         }
     }
 
+    function numberEvent(value, number)
+    {
+        if (!isNaN(parseInt(number, 10)))
+        {
+            if (input[value] === '0') { input[value] = ''; }
+
+            input[value] += number;
+            operationResult = '';
+        }
+    }
+
     function executeOperation(nextOperator = '')
     {
         const operation = {
@@ -89,7 +104,7 @@
         };
 
         operationResult = operation[input.operator](parseFloat(input.firstValue), parseFloat(input.secondValue));
-        operationResult = +(operationResult).toFixed(7);
+        operationResult = +(operationResult).toFixed(10);
         
         if (nextOperator)
         {
@@ -135,17 +150,22 @@
 
     function handleKeyAction(keyCode)
     {
-        let newInput = String.fromCharCode(keyCode),
-            currentValue = !input.operator ? 'firstValue' : 'secondValue';
+        let currentValue = !input.operator ? 'firstValue' : 'secondValue',
+            newInput = String.fromCharCode(keyCode);
+
+        if (keyCode === 13) newInput = 'enter';
+        if (keyCode === 8 || keyCode === 46) newInput = 'delete';
 
         switch(newInput)
         {
+            case 'delete':
             case 'c':
                 clearEvent(currentValue);
                 break;
             case '.':
                 dotEvent(currentValue);
                 break;
+            case 'enter':
             case '=':
                 equalEvent();
                 break;
@@ -156,11 +176,7 @@
                 operatorEvent(currentValue, newInput);
                 break;
             default:
-                if (!isNaN(parseInt(newInput, 10)))
-                {
-                    input[currentValue] += newInput;
-                    operationResult = '';
-                }
+                numberEvent(currentValue, newInput);
         }
 
         writeOnScreen();
@@ -183,8 +199,9 @@
         });
     });
 
-    document.addEventListener('keypress', function(e)
+    document.addEventListener('keydown', function(e)
     {
+        console.log(e.keyCode);
         handleKeyAction(e.keyCode);
     });
 
