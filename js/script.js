@@ -149,19 +149,21 @@
     /**
      * Execute the input operation
      * 
-     * @param {string} nextOperator='' If the execution follows a input operator
+     * @param {string} nextOperator If the execution follows a input operator
      */
-    function executeOperation(nextOperator = '')
+    function executeOperation(nextOperator = false)
     {
         const operation = {
-            '/': function(a, b) { return a / b; },
-            '*': function(a, b) { return a * b; },
-            '+': function(a, b) { return a + b; },
-            '-': function(a, b) { return a - b; }
+            '/': (a, b) => a / b,
+            '*': (a, b) => a * b,
+            '+': (a, b) => a + b,
+            '-': (a, b) => a - b
         };
 
-        operationResult = operation[input.operator](parseFloat(input.firstValue), parseFloat(input.secondValue));
-        operationResult = +(operationResult).toFixed(7);
+        operationResult = +(operation[input.operator](
+                                parseFloat(input.firstValue),
+                                parseFloat(input.secondValue)
+                          )).toFixed(7);
         
         if (nextOperator)
         {
